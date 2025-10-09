@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "304821041286",
+    "project_id": "ecom-wala",
+    "storage_bucket": "ecom-wala.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:304821041286:android:44579ad0786016fea9f907",
+        "android_client_info": {
+          "package_name": "com.example.shopping_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-WLMWRaLPwXHXLOJgxBuNTf8lmcNqAW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
