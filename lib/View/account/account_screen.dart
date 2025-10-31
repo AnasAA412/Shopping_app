@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopping_app/Controller/category_provider.dart';
 import 'package:shopping_app/Controller/provider.dart';
+import 'package:shopping_app/View/Admin/category/add_category.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -31,8 +33,8 @@ class AccountScreen extends StatelessWidget {
                     ), // add your image
                   ),
                   const SizedBox(height: 10),
-                   Text(
-                    "${user?.displayName }?? 'user'",
+                  Text(
+                    "${user?.displayName ?? "user"}",
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -40,8 +42,8 @@ class AccountScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 5),
-                  const Text(
-                    "johndoe@example.com",
+                  Text(
+                    "${user?.email ?? "user"}",
                     style: TextStyle(color: Colors.black),
                   ),
                   const SizedBox(height: 15),
@@ -59,7 +61,15 @@ class AccountScreen extends StatelessWidget {
                   ),
                 ],
               ),
-
+              ListTile(
+                leading: Icon(Icons.production_quantity_limits_rounded),
+                title: Text("Add Category"),
+                trailing: Icon(Icons.arrow_forward_ios),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddCategory()),
+                ),
+              ),
               ListTile(
                 leading: Icon(Icons.logout),
                 title: Text("Logout"),

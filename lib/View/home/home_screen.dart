@@ -2,17 +2,56 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_app/Controller/category_provider.dart';
+import 'package:shopping_app/Controller/product_provider.dart';
 import 'package:shopping_app/View/category/category_card.dart';
 import 'package:shopping_app/View/common/product_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:shopping_app/View/home/widgets/product_details.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _isLoading = true;
+  @override
+  void initState() {
+    super.initState();
+
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final productProvider = Provider.of<ProductProvider>(
+      context,
+      listen: false,
+    );
+    final categoryProvider = Provider.of<CategoryProvider>(
+      context,
+      listen: false,
+    );
+
+    await Future.wait([
+      categoryProvider.fetchCategories(),
+      productProvider.fetchProducts(),
+    ]);
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
-    // print("...................................${user}");
+    // final ProductProvider = Provider.of<ProductProvider>(context);
+    // final CategoryProvider = Provider.of<CategoryProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -175,7 +214,26 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            CategoryCard(name: 'Notebooks', imagePath: 'assets/google.png'),
+            Consumer<CategoryProvider>(
+              builder: (context, providerrr, child) => FutureBuilder(
+                future: providerrr.fetchCategories(),
+                builder: (context, snapShot) => Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: providerrr.categories.length,
+                      itemBuilder: (context, index) {
+                        final category = providerrr.categories[index];
+                        return CategoryCard(name: category.name, imagePath: '');
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Row(
@@ -188,34 +246,40 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: SizedBox(
-                height: 150,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    ProductCard(
-                      name: 'Notebook',
-                      price: '₹120',
-                      imagePath: 'assets/notebook.webp',
+            Consumer<ProductProvider>(
+              builder: (context, provider, child) => FutureBuilder(
+                future: provider.fetchProducts(),
+                builder: (context, snapshot) => Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: SizedBox(
+                    height: 370,
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 5,
+                        crossAxisSpacing: 5,
+                      ),
+                      itemCount: provider.products.length,
+                      itemBuilder: (context, index) {
+                        print(provider.products);
+                        final singleProduct = provider.products[index];
+                        return ProductCard(
+                          imagePath: singleProduct.imageUrl,
+                          name: singleProduct.name,
+                          price: singleProduct.price,
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ProductDetailsScreen(
+                                productId: singleProduct.id,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      // scrollDirection: Axis.horizontal,
                     ),
-                    ProductCard(
-                      name: 'Pen',
-                      price: '₹20',
-                      imagePath: 'assets/women.jpg',
-                    ),
-                    ProductCard(
-                      name: 'Chips',
-                      price: '₹40',
-                      imagePath: 'assets/chips.png',
-                    ),
-                    ProductCard(
-                      name: 'Earphones',
-                      price: '₹499',
-                      imagePath: 'assets/earphones.png',
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),

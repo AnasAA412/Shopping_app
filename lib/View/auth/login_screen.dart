@@ -26,9 +26,23 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "Login Ecom wala",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Login Ecom wala",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Please sign to continue",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                ],
               ),
               SizedBox(height: 32),
               // Email TextFormField
@@ -131,22 +145,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
 
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, 'signup');
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white, // text color
-                  backgroundColor: Colors.blue, // button background
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 12,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text("Don't have an account "),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'signup');
+                    },
+                    child: Text("SignUp"),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const Text("Signup"),
+                ],
               ),
             ],
           ),

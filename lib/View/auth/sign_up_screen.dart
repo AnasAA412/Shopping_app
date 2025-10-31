@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping_app/Controller/provider.dart';
 
-
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
@@ -141,7 +140,6 @@ class _SignupScreenState extends State<SignupScreen> {
                         nameController.text,
                         emaileditingController.text,
                         int.parse(ageController.text),
-                        
                       );
                       Future.delayed(const Duration(seconds: 3), () {
                         Navigator.pushNamedAndRemoveUntil(
@@ -202,7 +200,6 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               SizedBox(height: 86),
 
-              SizedBox(height: 16),
               ElevatedButton.icon(
                 icon: Image.asset(
                   'assets/google.png', // Make sure you have this asset
